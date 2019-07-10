@@ -1,0 +1,120 @@
+{{define "FlashMessages"}}{{range .}}
+  {{ if eq .ID "success"}} <div class="alert alert-success">{{ index .Args 0 }}</div> {{end}}
+  {{ if eq .ID "error"}} <div class="alert alert-danger">{{ index .Args 0 }}</div> {{end}}
+  {{ if eq .ID "info"}} <div class="alert alert-info">{{ index .Args 0 }}</div> {{end}}
+{{end}}{{end}}
+
+{{ define "list" }}
+
+<html>
+
+<head>
+  <title>Envdeploy</title>
+  <link rel="stylesheet" href="{{ "/static/bootstrap.min.css" | link }}">
+
+  <style>
+body {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+h3 {
+  margin-top: 2rem;
+}
+
+.row {
+  margin-bottom: 1rem;
+}
+.row .row {ß
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+[class*="col-"] {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  background-color: rgba(86, 61, 124, .15);
+  border: 1px solid rgba(86, 61, 124, .2);
+}
+
+hr {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+pre {
+  display: block;
+  padding: 9.5px;
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.42857143;
+  color: #333;
+  word-break: break-all;
+  word-wrap: break-word;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+  </style>
+</head>
+
+<body>
+	<div class="container">
+    {{template "FlashMessages" .flashMessages}}
+
+		<h1>Envdeploy</h1>
+
+		<h3>Current Jobs</h3>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Owner</th>
+          <th scope="col"></th>
+          <th><th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {{ range .Jobs }}
+        <tr>
+          <th scope="row">{{ .ID }}</th>
+          <td>{{ .Owner }}</td>
+          <th scope="row">{{if .Running}}<span style="color:green;">running</span>{{end}}</th>
+          <th class="text-right">
+          <a href="{{ .ID | printf "/enter/%s/" | link }}" type="button" class="btn btn-light btn-sm">Web Interface</a>
+          <a href="{{ .ID | printf "/jobs/%s" | link }}" type="button" class="btn btn-info btn-sm">See Info</a>
+          </th>
+        </tr>
+        {{ end }}
+      </tbody>
+    </table>
+
+    <h3>Deployable Environments</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th>Description<th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {{ range .Deployables }}
+        <tr>
+          <th scope="row">{{ .ID }}</th>
+          <td>{{ .Desc }}</td>
+          <td class="text-right">
+            <a href="{{ .ID | printf "/deploy/%s" | link }}" type="button" class="btn btn-light btn-sm">Deploy</a>
+          </td>
+        </tr>
+        {{ end }}
+      </tbody>
+    </table>
+	</div>
+</body>
+
+</html>
+
+{{ end }}
