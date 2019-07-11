@@ -193,8 +193,8 @@ func runContainedWithDialerThread(id string, cmd string, env []string, dir strin
 		})
 	}()
 
-	hostIp := fmt.Sprintf("10.0.%d.%d", (hostIfCounter/127)%256, (hostIfCounter%127)*2+1)
-	guestIp := fmt.Sprintf("10.0.%d.%d", (hostIfCounter/127)%256, (hostIfCounter%127)*2+2)
+	hostIp := fmt.Sprintf("10.0.%d.%d", (hostIfCounter/127)%256, (hostIfCounter%127)*2+0)
+	guestIp := fmt.Sprintf("10.0.%d.%d", (hostIfCounter/127)%256, (hostIfCounter%127)*2+1)
 
 	err = runInBackgroundNetns(func() error {
 		var cmd *exec.Cmd
