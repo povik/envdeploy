@@ -55,12 +55,17 @@ var templatesPath string
 var staticPath string
 
 func initPaths() {
-	execPath, err := os.Executable()
-	if err != nil {
-		log.Panicf("os.Executable(): %s", err)
+	dataDir := os.Getenv("ENVDEPLOY_DATA_DIR")
+	if dataDir == "" {
+		execPath, err := os.Executable()
+		if err != nil {
+			log.Panicf("os.Executable(): %s", err)
+		}
+		dataDir = path.Dir(execPath)
 	}
-	templatesPath = path.Join(path.Dir(execPath), "templates")
-	staticPath = path.Join(path.Dir(execPath), "static")
+
+	templatesPath = path.Join(dataDir, "templates")
+	staticPath = path.Join(dataDir, "static")
 }
 
 type Deployable struct {
