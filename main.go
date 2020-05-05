@@ -366,5 +366,9 @@ func main() {
 	mux.HandleFunc("/enter/", requireLogin(handleGateway))
 
 	h := http.StripPrefix(*flagBasePath, mux)
-	fmt.Fprintln(os.Stderr, http.ListenAndServe(*flagListenAddr, h))
+	err := http.ListenAndServe(*flagListenAddr, h)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }
