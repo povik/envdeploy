@@ -236,10 +236,10 @@ func deploy(w http.ResponseWriter, r *http.Request, user_ user) {
 		return
 	}
 
-	envs := []string{
+	envs := append(os.Environ(),
 		fmt.Sprintf("WEB_BASE_PATH=%s/enter/%s", *flagBasePath, jobID.String()),
 		fmt.Sprintf("JOB_OWNER=%s", user_),
-	}
+	)
 	job.Start(d.LaunchScript, envs, "/")
 	setFlashAndRedirect(w, r, Link("/jobs/"+jobID.String()), "success", "Deployment successful")
 }
