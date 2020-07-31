@@ -24,6 +24,10 @@ func (u user) IsAdmin() bool {
 	return isAdminMap[u]
 }
 
-func (u user) CanAccessJob(jobOwner user) bool {
-	return u == jobOwner || u.IsAdmin()
+func (u user) CanAccessJob(j *job) bool {
+	return j.Public || u == j.Owner || u.IsAdmin()
+}
+
+func (u user) CanManageJob(j *job) bool {
+	return u == j.Owner || u.IsAdmin()
 }

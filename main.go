@@ -73,6 +73,7 @@ type Deployable struct {
 	Desc         string `json:"Desc"`
 	LaunchScript string `json:"LaunchScript"`
 	JobIDFormat  string `json:"JobIDFormat"`
+	Public       bool   `json:"Public"`
 }
 
 var (
@@ -176,7 +177,7 @@ func listJobs(w http.ResponseWriter, r *http.Request, u user) {
 	jobsInfo := []JobInfo{}
 	jobs.RLock()
 	for _, job := range jobs.m {
-		if !u.CanAccessJob(job.Owner) {
+		if !u.CanManageJob(job) {
 			continue
 		}
 		jobsInfo = append(jobsInfo, JobInfo{
@@ -235,6 +236,7 @@ func deploy(w http.ResponseWriter, r *http.Request, user_ user) {
 		http.Redirect(w, r, Link("/"), http.StatusFound)
 		return
 	}
+	job.Public = d.Public
 
 	envs := append(os.Environ(),
 		fmt.Sprintf("WEB_BASE_PATH=%s/enter/%s", *flagBasePath, jobID.String()),
@@ -291,7 +293,7 @@ func handleJob(w http.ResponseWriter, r *http.Request, u user) {
 			return
 		}
 	} else {
-		if !u.CanAccessJob(job.Owner) {
+		if !u.CanManageJob(job) {
 			http.Error(w, "forbidden. you are not the job owner, neither are you an administrator", 403)
 			return
 		}
@@ -315,7 +317,7 @@ func handleGateway(w http.ResponseWriter, r *http.Request, u user) {
 		http.Error(w, "job not found", 404)
 		return
 	}
-	if !u.CanAccessJob(job.Owner) {
+	if !u.CanAccessJob(job) {
 		http.Error(w, "forbidden. you are not the job owner, neither are you an administrator", 403)
 		return
 	}

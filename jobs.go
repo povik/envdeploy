@@ -15,7 +15,8 @@ type job struct {
 	ID     string
 	Cgroup string
 
-	Owner user
+	Owner  user
+	Public bool
 
 	http.RoundTripper
 	*httputil.ReverseProxy
