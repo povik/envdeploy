@@ -165,7 +165,7 @@ func (j *job) IsFinished() bool {
 
 func (j *job) SendSignal(sig int) {
 	/* IMPROVE */
-	err_str := Sh(fmt.Sprintf("kill -s %d $(find %s -name cgroup.procs | xargs cat | sort | head -n 1)", sig, j.Cgroup))
+	err_str := Sh(fmt.Sprintf("kill -s %d $(find %s -name cgroup.procs | xargs cat | sort -n | head -n 1)", sig, j.Cgroup))
 	if err_str != "" {
 		log.Println(err_str)
 	}

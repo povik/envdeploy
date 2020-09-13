@@ -16,7 +16,7 @@ func createRouteFromCurrentNetns(hostIfName string) error {
 
 	return runInBackgroundNetns(func() error {
 		la := netlink.NewLinkAttrs()
-		la.Name = "eth0"
+		la.Name = "eth1"
 		la.Namespace = netlink.NsFd(currentNs)
 
 		veth := &netlink.Veth{

@@ -223,9 +223,9 @@ func runContainedWithDialerThread(id string, cmd string, env []string, dir strin
 
 	guestCmds := [][]string{
 		{"ip", "link", "set", "dev", "lo", "up"},
-		{"ip", "link", "set", "dev", "eth0", "up"},
-		{"ip", "addr", "add", guestIp + "/31", "dev", "eth0"},
-		{"ip", "route", "add", hostIp, "dev", "eth0"},
+		{"ip", "link", "set", "dev", "eth1", "up"},
+		{"ip", "addr", "add", guestIp + "/31", "dev", "eth1"},
+		{"ip", "route", "add", hostIp, "dev", "eth1"},
 		{"ip", "route", "add", "default", "via", hostIp},
 	}
 
