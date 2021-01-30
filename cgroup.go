@@ -17,7 +17,7 @@ import (
 )
 
 var (
-	cgroupBasePath = "/sys/fs/cgroup"
+	cgroupBasePath = "/sys/fs/cgroup/unified"
 
 	cgroupOurPath  = ""
 	cgroupJobsPath = ""
